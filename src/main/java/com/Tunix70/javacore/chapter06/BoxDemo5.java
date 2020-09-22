@@ -1,6 +1,6 @@
-package com.company;
+package main.java.com.Tunix70.javacore.chapter06;
 
-class Box{
+class Box5 {
     double width;
     double height;
     double depth;
@@ -8,6 +8,7 @@ class Box{
     double volume() {
         return width * height * depth;
     }
+
     void setDim (double w, double h, double d){
         width = w;
         height = h;
@@ -18,8 +19,8 @@ class Box{
 public class BoxDemo5 {  //стр 167
 
     public static void main(String[] args) {
-	Box mybox1 = new Box();
-	Box mybox2 = new Box();
+	Box5 mybox1 = new Box5();
+	Box5 mybox2 = new Box5();
 	double vol;
 
 	mybox1.setDim(10, 20, 15);
