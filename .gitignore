@@ -7,3 +7,5 @@ out/*
 *.war
 *.ear
 *.jar
+
+Study.iml
