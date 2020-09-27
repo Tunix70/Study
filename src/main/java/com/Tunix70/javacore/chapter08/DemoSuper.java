@@ -1,4 +1,4 @@
-package chapter08;
+package main.java.com.Tunix70.javacore.chapter08;
 
 class Box1{
     private double width;

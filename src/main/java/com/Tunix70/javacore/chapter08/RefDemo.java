@@ -1,4 +1,4 @@
-package chapter08;
+package main.java.com.Tunix70.javacore.chapter08;
 
 class RefDemo {
     public static void main(String[] args) {

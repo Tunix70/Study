@@ -1,4 +1,4 @@
-package d24;
+package main.java.com.Tunix70.javacore.chapter07;
 
 public class VarArgs {
     static void vaTest(int ... v) {
