@@ -1,9 +1,9 @@
-package src.main.java.com.Tunix70.javacore.d2809;
+package src.main.java.com.Tunix70.javacore.chapter09;
 
-public interface MyIF{
+interface MyIF{
     int getNumber();
     default String getString(){
-        return "Объект типа String по умолчанию"
+        return "Объект типа String по умолчанию";
     }
 }
 
