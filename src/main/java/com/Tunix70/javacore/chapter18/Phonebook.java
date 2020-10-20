@@ -1,7 +1,5 @@
 package main.java.com.Tunix70.javacore.chapter18;
 
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
-
 import java.io.*;
 import java.util.Properties;
 
