@@ -1,4 +1,4 @@
-package Tunix70;
+package main.java.com.Tunix70.javacore.chapter20;
 
 class PrintfDemo {
     public static void main(String[] args) {

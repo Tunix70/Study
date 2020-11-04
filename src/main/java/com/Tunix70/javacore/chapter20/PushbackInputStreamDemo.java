@@ -1,4 +1,4 @@
-package Tunix70;
+package main.java.com.Tunix70.javacore.chapter20;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
