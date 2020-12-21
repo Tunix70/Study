@@ -15,10 +15,10 @@ public class SimpExec {
         System.out.println("Запуск потоков");
 
         //запустить потоки исполнения
-        es.execute(new MyThread(cdl, "A"));
-        es.execute(new MyThread(cdl2, "B"));
-        es.execute(new MyThread(cdl3, "C"));
-        es.execute(new MyThread(cdl4, "D"));
+        es.execute(new MyThread6(cdl, "A"));
+        es.execute(new MyThread6(cdl2, "B"));
+        es.execute(new MyThread6(cdl3, "C"));
+        es.execute(new MyThread6(cdl4, "D"));
 
         try{
             cdl.await();
@@ -32,11 +32,11 @@ public class SimpExec {
         System.out.println("Завершение потоков");
     }
 }
-class MyThread implements Runnable{
+class MyThread6 implements Runnable{
     String name;
     CountDownLatch latch;
 
-    MyThread(CountDownLatch c, String n){
+    MyThread6(CountDownLatch c, String n){
         latch = c;
         name = n;
 

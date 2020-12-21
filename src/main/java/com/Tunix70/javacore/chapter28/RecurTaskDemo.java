@@ -4,7 +4,7 @@ package main.java.com.Tunix70.javacore.chapter28;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveTask;
 
-class Sum extends RecursiveTask<Double>{
+class Sum6 extends RecursiveTask<Double>{
 
     //пороговое значение последовательного выполнения
     final int seqThresHold = 500;
@@ -15,7 +15,7 @@ class Sum extends RecursiveTask<Double>{
     //определить часть обрабатываемых данных
     int start, end;
 
-    Sum(double[] vals, int s, int e){
+    Sum6(double[] vals, int s, int e){
         data = vals;
         start = s;
         end = e;
@@ -39,8 +39,8 @@ class Sum extends RecursiveTask<Double>{
 
             //запустить новые подзадачи на выполнение, используя
             //разделенные на части данные
-            Sum subTaskA = new Sum(data, start, middle);
-            Sum subTaskB = new Sum(data, middle, end);
+            Sum6 subTaskA = new Sum6(data, start, middle);
+            Sum6 subTaskB = new Sum6(data, middle, end);
 
             //запустить каждую подзадачу по\утем разветвления
             subTaskA.fork();
@@ -66,7 +66,7 @@ class RecurTaskDemo {
         for (int i = 0; i < nums.length; i++)
             nums[i] = (double) (((i % 2) == 0) ? i : -i);
 
-        Sum task = new Sum(nums, 0, nums.length);
+        Sum6 task = new Sum6(nums, 0, nums.length);
 
         //Запус тить задачи типа ForkJoinTaak. Обратите
         //внимание на то, что в данном случае метод invoke( )
