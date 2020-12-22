@@ -3,75 +3,72 @@ package main.java.com.Tunix70.javacore.task;
 import java.util.concurrent.Semaphore;
 
 class Foo{
-    public void printFirst(){
-        System.out.print("first");
-    }
-    public void printSecond(){
-        System.out.print("second");
-    }
-    public void printThird(){
-        System.out.print("third");
-    }
-}
+    private static final Semaphore printOne = new Semaphore(1);
+    private static final Semaphore printTwo = new Semaphore(1);
+    private static final Semaphore printThree = new Semaphore(1);
 
-interface Subtask {
-    void run() throws InterruptedException;
-}
-
-public class Starter {
-    private final Semaphore printOne = new Semaphore(1);
-    private final Semaphore printTwo = new Semaphore(1);
-    private final Semaphore printThree = new Semaphore(1);
-
-    public Starter() throws InterruptedException {
+    public Foo() throws InterruptedException {
         printTwo.acquire();
         printThree.acquire();
     }
 
     public void printFirst() throws InterruptedException {
         printOne.acquire();
-        try {
-            new Foo().printFirst();
-        } finally {
-            printTwo.release();
-        }
+        System.out.print("first");
+        printTwo.release();
     }
-
     public void printSecond() throws InterruptedException {
         printTwo.acquire();
-        try {
-            new Foo().printSecond();
-        } finally {
-            printThree.release();
-        }
+        System.out.print("second");
+        printThree.release();
     }
-
     public void printThird() throws InterruptedException {
         printThree.acquire();
-        try {
-            new Foo().printThird();
-        } finally {
-            printOne.release();
-        }
+        System.out.print("third");
+        printOne.release();
     }
 
-    static void thread(Subtask s){
-        new Thread(() -> {
+}
+
+public class Starter {
+    public static void main(String[] args) throws InterruptedException {
+        new Thread(new Thread1()).start();
+        new Thread(new Thread2()).start();
+        new Thread(new Thread3()).start();
+    }
+}
+class Thread1 implements Runnable{
+
+         @Override
+         public void run() {
+             try {
+                 new Foo().printFirst();
+             } catch (InterruptedException e) {
+                 e.printStackTrace();
+             }
+         }
+}
+class Thread2 implements Runnable{
+
+         @Override
+         public void run() {
+             try {
+                 new Foo().printSecond();
+             } catch (InterruptedException e) {
+                 e.printStackTrace();
+             }
+         }
+}
+class Thread3 implements Runnable{
+
+        @Override
+        public void run() {
             try {
-                s.run();
+                new Foo().printThird();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        }).start();
-
-    }
-
-    public static void main(String[] args) throws InterruptedException {
-        Starter starter = new Starter();
-
-        thread(starter :: printThird);
-        thread(starter :: printFirst);
-        thread(starter :: printSecond);
-
-    }
+        }
 }
+
+
