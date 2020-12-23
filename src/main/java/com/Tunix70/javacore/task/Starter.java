@@ -7,9 +7,13 @@ class Foo{
     private static final Semaphore printTwo = new Semaphore(1);
     private static final Semaphore printThree = new Semaphore(1);
 
-    public Foo() throws InterruptedException {
-        printTwo.acquire();
-        printThree.acquire();
+    static {
+        try {
+            printTwo.acquire();
+            printThree.acquire();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public void printFirst() throws InterruptedException {
@@ -32,9 +36,9 @@ class Foo{
 
 public class Starter {
     public static void main(String[] args) throws InterruptedException {
-        new Thread(new Thread1()).start();
         new Thread(new Thread2()).start();
         new Thread(new Thread3()).start();
+        new Thread(new Thread1()).start();
     }
 }
 class Thread1 implements Runnable{
