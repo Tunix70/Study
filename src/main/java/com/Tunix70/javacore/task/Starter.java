@@ -1,5 +1,6 @@
 package main.java.com.Tunix70.javacore.task;
 
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Semaphore;
 
 class Foo{
@@ -40,8 +41,8 @@ public class Starter {
         new Thread(new Thread2(foo)).start();
         new Thread(new Thread3(foo)).start();
         new Thread(new Thread1(foo)).start();
+//        CompletableFuture.runAsync
     }
-
 }
 class Thread1 implements Runnable{
         private Foo foo;
@@ -55,7 +56,7 @@ class Thread1 implements Runnable{
              } catch (InterruptedException e) {
                  e.printStackTrace();
              }
-         }
+        }
 }
 class Thread2 implements Runnable{
         private Foo foo;
