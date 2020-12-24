@@ -3,11 +3,11 @@ package main.java.com.Tunix70.javacore.task;
 import java.util.concurrent.Semaphore;
 
 class Foo{
-    private static final Semaphore printOne = new Semaphore(1);
-    private static final Semaphore printTwo = new Semaphore(1);
-    private static final Semaphore printThree = new Semaphore(1);
+    private final Semaphore printOne = new Semaphore(1);
+    private final Semaphore printTwo = new Semaphore(1);
+    private final Semaphore printThree = new Semaphore(1);
 
-    static {
+    public Foo() {
         try {
             printTwo.acquire();
             printThree.acquire();
@@ -36,39 +36,50 @@ class Foo{
 
 public class Starter {
     public static void main(String[] args) throws InterruptedException {
-        new Thread(new Thread2()).start();
-        new Thread(new Thread3()).start();
-        new Thread(new Thread1()).start();
+        Foo foo = new Foo();
+        new Thread(new Thread2(foo)).start();
+        new Thread(new Thread3(foo)).start();
+        new Thread(new Thread1(foo)).start();
     }
+
 }
 class Thread1 implements Runnable{
-
+        private Foo foo;
+        public Thread1(Foo foo){
+            this.foo = foo;
+        }
          @Override
          public void run() {
              try {
-                 new Foo().printFirst();
+                 foo.printFirst();
              } catch (InterruptedException e) {
                  e.printStackTrace();
              }
          }
 }
 class Thread2 implements Runnable{
-
+        private Foo foo;
+        public Thread2(Foo foo){
+            this.foo = foo;
+        }
          @Override
          public void run() {
              try {
-                 new Foo().printSecond();
+                 foo.printSecond();
              } catch (InterruptedException e) {
                  e.printStackTrace();
              }
          }
 }
 class Thread3 implements Runnable{
-
+        private Foo foo;
+        public Thread3(Foo foo){
+            this.foo = foo;
+        }
         @Override
         public void run() {
             try {
-                new Foo().printThird();
+                foo.printThird();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
