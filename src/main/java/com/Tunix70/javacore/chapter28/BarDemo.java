@@ -25,14 +25,12 @@ class MyThread1 implements Runnable{
 
     MyThread1(CyclicBarrier c, String n){
         cbar = c;
-
         name = n;
         new Thread(this).start();
     }
 
     public void run(){
         System.out.println(name);
-
         try{
             cbar.await();
         }catch (BrokenBarrierException e){

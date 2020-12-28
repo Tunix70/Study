@@ -36,7 +36,7 @@ class Foo{
 }
 
 public class Starter {
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         Foo foo = new Foo();
         CompletableFuture.runAsync(() -> {
             try {
