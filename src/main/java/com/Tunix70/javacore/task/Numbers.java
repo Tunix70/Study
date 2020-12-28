@@ -6,13 +6,18 @@ import java.util.concurrent.Semaphore;
 class FizzBuzz {
     int n;
 
-    private final Semaphore semFizz = new Semaphore(1);
-    private final Semaphore semBuzz = new Semaphore(1);
-    private final Semaphore semFizzBuzz = new Semaphore(1);
-    private final Semaphore semNumber = new Semaphore(1);
+    private final Semaphore semFizz;
+    private final Semaphore semBuzz;
+    private final Semaphore semFizzBuzz;
+    private final Semaphore semNumber;
 
     public FizzBuzz(int n) throws InterruptedException {
         this.n = n;
+
+        semFizz = new Semaphore(1);
+        semBuzz = new Semaphore(1);
+        semFizzBuzz = new Semaphore(1);
+        semNumber = new Semaphore(1);
 
         semFizz.acquire();
         semBuzz.acquire();
@@ -46,15 +51,12 @@ class FizzBuzz {
             for (int i = 1; i < n; i++) {
                 if (((i % 3) == 0) && ((i % 5) == 0)){
                 semFizzBuzz.release();
-                continue;
                 }
-                if ((i % 3) == 0){
+                else if ((i % 3) == 0){
                     semFizz.release();
-                    continue;
                 }
-                if ((i % 5) == 0){
+                else if ((i % 5) == 0){
                     semBuzz.release();
-                    continue;
                 }else
                 System.out.print(i);
                 continue;
@@ -64,8 +66,30 @@ class FizzBuzz {
 
 public class Numbers {
         public static void main(String[] args) throws InterruptedException {
-        FizzBuzz fb = new FizzBuzz(15);
+        FizzBuzz fb = new FizzBuzz(25);
 
+        CompletableFuture.runAsync(() -> {
+            try {
+                fb.fizz();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+            CompletableFuture.runAsync(() -> {
+                try {
+                    fb.buzz();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            });
+            CompletableFuture.runAsync(() -> {
+                try {
+                    fb.fizzbuzz();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            });
+            CompletableFuture.runAsync(() -> fb.number());
     }
 }
 
