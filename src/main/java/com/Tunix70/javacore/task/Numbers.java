@@ -1,7 +1,7 @@
 package main.java.com.Tunix70.javacore.task;
 
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Semaphore;
+import java.util.function.IntConsumer;
 
 class FizzBuzz {
     int n;
@@ -20,93 +20,92 @@ class FizzBuzz {
         semNumber = new Semaphore(1);
     }
 
-//        public void fizz() throws InterruptedException {
-//            for (int i = 3; i <= n; i += 3) {
-//                semFizz.acquire();
-//                System.out.print("Fizz ");
-//                semNumber.release();
-//            }
-//        }
-//
-//        public void buzz () throws InterruptedException {
-//            for (int i = 5; i <= n; i += 5) {
-//                semBuzz.acquire();
-//                System.out.print("Buzz ");
-//                semNumber.release();
-//            }
-//        }
-//
-//        public void fizzbuzz () throws InterruptedException {
-//            for (int i = 15; i <= n; i += 15) {
-//                semFizzBuzz.acquire();
-//                System.out.print("FizzBuzz ");
-//                semNumber.release();
-//            }
-//        }
-
-        public void number() throws InterruptedException {
-                semNumber.acquire();
-            for (int i = 1; i <= n; i++) {
-//                if (((i % 3) == 0) && ((i % 5) == 0)){
-//                    semFizzBuzz.release();
-//                }
-//                else if ((i % 3) == 0){
-//                    semFizz.release();
-//                }
-//                else if ((i % 5) == 0){
-//                    semBuzz.release();
-//                }else
-                    System.out.print(i);
-//            }
+    public void fizz(Runnable printFizz) throws InterruptedException {
+        for (int i = 3; i <= n ; i+= 3) {
+            semFizz.acquire();
+            printFizz.run();
+            semNumber.release();
         }
-}
+    }
 
-public class Numbers {
-        public static void main(String[] args) throws InterruptedException {
-        FizzBuzz fb = new FizzBuzz(25);
-        new Thread(new Thread1(fb)).start();
-//        CompletableFuture.runAsync(() -> {
-//            try {
-//                fb.fizz();
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//        });
-//            CompletableFuture.runAsync(() -> {
-//                try {
-//                    fb.buzz();
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//            });
-//            CompletableFuture.runAsync(() -> {
-//                try {
-//                    fb.fizzbuzz();
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//            });
-//            CompletableFuture.runAsync(() -> {
-//                try {
-//                    fb.number();
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//            });
+    public void buzz(Runnable printBuzz) throws InterruptedException {
+        for (int i = 5; i <= n ; i += 5) {
+            semBuzz.acquire();
+            printBuzz.run();
+            semNumber.release();
+        }
+    }
+
+    public void fizzbuzz(Runnable printfizzbuzz) throws InterruptedException {
+        for (int i = 15; i <= n; i += 15) {
+            semFizzBuzz.acquire();
+            printfizzbuzz.run();
+            semNumber.release();
+        }
+    }
+
+    public void number(IntConsumer number) throws InterruptedException {
+        for (int i = 1; i <= n; i++) {
+            semNumber.acquire();
+            if(i % 15 == 0){
+                semFizzBuzz.release();
+            }
+            else if(i % 5 == 0){
+                semBuzz.release();
+            }
+            else if(i % 3 == 0){
+                semFizz.release();
+            }
+            else{
+                number.accept(i);
+                semNumber.release();
+            }
+        }
     }
 }
-class Thread1 implements Runnable{
-    FizzBuzz fb;
-    public Thread1(FizzBuzz fb){
-        this.fb = fb;
-    }
-    @Override
-    public void run() {
-        try {
-            fb.number();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+
+class Number{
+    public static void main(String[] args) throws InterruptedException {
+        FizzBuzz fizzBuzz = new FizzBuzz(31);
+
+        Runnable printfizz = () -> System.out.print("fizz ");
+        Runnable printBuzz = () -> System.out.print("buzz ");
+        Runnable printFizzBuzz = () -> System.out.print("fizzbuzz ");
+        IntConsumer printNumber = number -> System.out.print(number + " ");
+
+        Thread threadA = new Thread(() -> {
+            try {
+                fizzBuzz.fizz(printfizz);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+        Thread threadB = new Thread(() -> {
+            try {
+                fizzBuzz.buzz(printBuzz);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+        Thread threadC = new Thread(()-> {
+            try {
+                fizzBuzz.fizzbuzz(printFizzBuzz);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+        Thread threadD = new Thread(() -> {
+            try {
+                fizzBuzz.number(printNumber);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+
+        threadA.start();
+        threadB.start();
+        threadC.start();
+        threadD.start();
     }
 }
 
