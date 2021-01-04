@@ -25,9 +25,9 @@ class FizzBuzz {
             semFizz.acquire();
             printFizz.run();
             semNumber.release();
-//            if ((i + 3) % 5 == 0) {
-//                i += 3;
-//            }
+            if ((i + 3) % 5 == 0) {
+                i += 3;
+            }
         }
     }
 
@@ -86,7 +86,7 @@ class Number{
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            System.out.println("А ЗАВЕРШЕН ");
+//            System.out.println("А ЗАВЕРШЕН ");
         });
 
         Thread threadB = new Thread(() -> {
@@ -95,7 +95,7 @@ class Number{
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            System.out.println("В ЗАВЕРШЕН ");
+//            System.out.println("В ЗАВЕРШЕН ");
         });
         Thread threadC = new Thread(()-> {
             try {
@@ -103,7 +103,7 @@ class Number{
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            System.out.println("С ЗАВЕРШЕН ");
+//            System.out.println("С ЗАВЕРШЕН ");
         });
         Thread threadD = new Thread(() -> {
             try {
@@ -111,7 +111,7 @@ class Number{
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            System.out.println("D ЗАВЕРШЕН ");
+//            System.out.println("D ЗАВЕРШЕН ");
         });
 
         threadA.start();
