@@ -11,7 +11,7 @@ class FizzBuzz {
     private final Semaphore semFizzBuzz;
     private final Semaphore semNumber;
 
-    public FizzBuzz(int n) throws InterruptedException {
+    public FizzBuzz(int n) {
         this.n = n;
 
         semFizz = new Semaphore(0);
@@ -25,6 +25,9 @@ class FizzBuzz {
             semFizz.acquire();
             printFizz.run();
             semNumber.release();
+//            if ((i + 3) % 5 == 0) {
+//                i += 3;
+//            }
         }
     }
 
@@ -33,13 +36,17 @@ class FizzBuzz {
             semBuzz.acquire();
             printBuzz.run();
             semNumber.release();
+            if ((i + 5) % 3 == 0) {
+                i += 5;
+            }
+
         }
     }
 
-    public void fizzbuzz(Runnable printfizzbuzz) throws InterruptedException {
+    public void fizzbuzz(Runnable printFizzBuzz) throws InterruptedException {
         for (int i = 15; i <= n; i += 15) {
             semFizzBuzz.acquire();
-            printfizzbuzz.run();
+            printFizzBuzz.run();
             semNumber.release();
         }
     }
@@ -65,27 +72,30 @@ class FizzBuzz {
 }
 
 class Number{
-    public static void main(String[] args) throws InterruptedException {
-        FizzBuzz fizzBuzz = new FizzBuzz(31);
-
-        Runnable printfizz = () -> System.out.print("fizz ");
+    public static void main(String[] args) {
+        FizzBuzz fizzBuzz = new FizzBuzz(15);
+        Runnable printFizz = () -> System.out.print("fizz ");
         Runnable printBuzz = () -> System.out.print("buzz ");
         Runnable printFizzBuzz = () -> System.out.print("fizzbuzz ");
         IntConsumer printNumber = number -> System.out.print(number + " ");
 
         Thread threadA = new Thread(() -> {
             try {
-                fizzBuzz.fizz(printfizz);
+                fizzBuzz.fizz(printFizz);
+
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+            System.out.println("А ЗАВЕРШЕН ");
         });
+
         Thread threadB = new Thread(() -> {
             try {
                 fizzBuzz.buzz(printBuzz);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+            System.out.println("В ЗАВЕРШЕН ");
         });
         Thread threadC = new Thread(()-> {
             try {
@@ -93,6 +103,7 @@ class Number{
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+            System.out.println("С ЗАВЕРШЕН ");
         });
         Thread threadD = new Thread(() -> {
             try {
@@ -100,6 +111,7 @@ class Number{
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+            System.out.println("D ЗАВЕРШЕН ");
         });
 
         threadA.start();
